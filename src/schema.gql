@@ -1,0 +1,22 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Fighter {
+  birthDate: DateTime
+  fullName: String!
+  heightCm: Float
+  id: Int!
+  nationality: String
+  nickname: String
+  reachCm: Float
+}
+
+type Query {
+  fighters: [Fighter!]!
+}
