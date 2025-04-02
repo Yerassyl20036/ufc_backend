@@ -1,17 +1,24 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { Fighter } from '../entities/fighter.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FightersService } from './fighters.service';
+import { FighterStatistics } from './dto/fighter-statistics.type';
 
 @Resolver(() => Fighter)
 export class FightersResolver {
-  constructor(
-    @InjectRepository(Fighter)
-    private fightersRepository: Repository<Fighter>,
-  ) {}
+  constructor(private readonly fightersService: FightersService) {}
 
-  @Query(() => [Fighter], { name: 'fighters' })
-  async getFighters() {
-    return this.fightersRepository.find();
+  @Query(() => [Fighter])
+  async fighters() {
+    return this.fightersService.findAll();
+  }
+
+  @Query(() => Fighter)
+  async fighter(@Args('id', { type: () => Int }) id: number) {
+    return this.fightersService.findOne(id);
+  }
+
+  @Query(() => FighterStatistics)
+  async fighterStatistics(@Args('id', { type: () => Int }) id: number) {
+    return this.fightersService.getFighterStatistics(id);
   }
 }

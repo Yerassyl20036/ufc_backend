@@ -2,21 +2,143 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateEventInput {
+  date: DateTime!
+  location: String!
+  name: String!
+}
+
+input CreateFightInput {
+  duration: String
+  eventId: Int!
+  method: String!
+  roundCount: Int!
+  weightClassId: Int!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
 
+type Event {
+  date: DateTime!
+  fights: [Fight!]
+  id: Int!
+  location: String!
+  name: String!
+}
+
+type Fight {
+  date: DateTime!
+  duration: String
+  event: Event!
+  fightResults: [FightResult!]
+  id: Int!
+  method: String!
+  roundCount: Int!
+  weightClass: WeightClass!
+}
+
+type FightResult {
+  fight: Fight!
+  fighter: Fighter!
+  id: Int!
+  isWinner: Boolean!
+  method: String!
+  round: Int!
+  timeInRound: String
+}
+
 type Fighter {
   birthDate: DateTime
+  fightResults: [FightResult!]
   fullName: String!
   heightCm: Float
   id: Int!
   nationality: String
   nickname: String
   reachCm: Float
+  stats: FighterStats
+  team: Team
+  weightClass: WeightClass!
+}
+
+type FighterStatistics {
+  fighter: Fighter!
+  knockouts: Int!
+  losses: Int!
+  recentFights: [FightResult!]!
+  submissions: Int!
+  totalFights: Int!
+  wins: Int!
+}
+
+type FighterStats {
+  draws: Int!
+  fighter: Fighter!
+  id: Int!
+  knockouts: Int!
+  losses: Int!
+  submissions: Int!
+  wins: Int!
+}
+
+type Mutation {
+  createEvent(createEventInput: CreateEventInput!): Event!
+  createFight(createFightInput: CreateFightInput!): Fight!
+  removeEvent(id: Int!): Boolean!
+  removeFight(id: Int!): Boolean!
+  updateEvent(id: Int!, updateEventInput: UpdateEventInput!): Event!
+  updateFight(id: Int!, updateFightInput: UpdateFightInput!): Fight!
 }
 
 type Query {
+  event(id: Int!): Event!
+  events: [Event!]!
+  fight(id: Int!): Fight!
+  fighter(id: Int!): Fighter!
+  fighterStatistics(id: Int!): FighterStatistics!
   fighters: [Fighter!]!
+  fights: [Fight!]!
+  rankingsByWeightClass(weightClassId: Int!): [Ranking!]!
+  upcomingEvents: [Event!]!
+}
+
+type Ranking {
+  fighter: Fighter!
+  id: Int!
+  rank: Int!
+  updatedAt: DateTime!
+  weightClass: WeightClass!
+}
+
+type Team {
+  fighters: [Fighter!]
+  id: Int!
+  location: String
+  name: String!
+}
+
+input UpdateEventInput {
+  date: DateTime
+  location: String
+  name: String
+}
+
+input UpdateFightInput {
+  duration: String
+  eventId: Int
+  method: String
+  roundCount: Int
+  weightClassId: Int
+}
+
+type WeightClass {
+  fighters: [Fighter!]
+  fights: [Fight!]
+  id: Int!
+  name: String!
+  rankings: [Ranking!]
+  weightLimit: Float!
 }

@@ -4,7 +4,6 @@ import { WeightClass } from './weight-class.entity';
 import { Team } from './team.entity';
 import { FighterStats } from './fighter-stats.entity';
 import { FightResult } from './fight-result.entity';
-import { Ranking } from './ranking.entity';
 
 @ObjectType()
 @Entity()
@@ -21,7 +20,7 @@ export class Fighter {
   @Column({ nullable: true })
   nickname: string;
 
-  @Field({ nullable: true })
+  @Field(() => Date, { nullable: true })
   @Column({ type: 'timestamp', nullable: true })
   birthDate: Date;
 
@@ -37,18 +36,19 @@ export class Fighter {
   @Column({ type: 'float', nullable: true })
   reachCm: number;
 
+  @Field(() => WeightClass)
   @ManyToOne(() => WeightClass, weightClass => weightClass.fighters)
   weightClass: WeightClass;
 
-  @ManyToOne(() => Team, team => team.fighters, { nullable: true })
+  @Field(() => Team, { nullable: true })
+  @ManyToOne(() => Team, team => team.fighters)
   team: Team;
 
+  @Field(() => FighterStats, { nullable: true })
   @OneToOne(() => FighterStats, stats => stats.fighter)
   stats: FighterStats;
 
+  @Field(() => [FightResult], { nullable: true })
   @OneToMany(() => FightResult, fightResult => fightResult.fighter)
   fightResults: FightResult[];
-
-  @OneToMany(() => Ranking, ranking => ranking.fighter)
-  rankings: Ranking[];
 }

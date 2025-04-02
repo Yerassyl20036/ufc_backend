@@ -5,6 +5,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { FightersModule } from './fighters/fighters.module';
+import { EventsModule } from './events/events.module';
+import { FightsModule } from './fights/fights.module';
+import { WeightClassesModule } from './weight-classes/weight-classes.module';
+import { FightResultsModule } from './fight-results/fight-results.module';
+import { RankingsModule } from './rankings/rankings.module';
+import { TeamsModule } from './teams/teams.module';
+import { FighterStatsModule } from './fighter-stats/fighter-stats.module';
 
 @Module({
   imports: [
@@ -37,6 +44,13 @@ import { FightersModule } from './fighters/fighters.module';
       inject: [ConfigService],
     }),
     FightersModule,
+    EventsModule,
+    FightsModule,
+    WeightClassesModule,
+    FightResultsModule,
+    RankingsModule,
+    TeamsModule,
+    FighterStatsModule,  // Add this line
   ],
 })
 export class AppModule {}
